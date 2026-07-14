@@ -1,0 +1,2789 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1064</width>
+    <height>855</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Твій Вартовий - Система безпеки</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="styleSheet">
+    <string>background-color: #f4f6f7; font-family: &quot;Arial&quot;;</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_root">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <widget class="QWidget" name="page_welcome">
+       <layout class="QVBoxLayout" name="layout_welcome">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <property name="leftMargin">
+         <number>40</number>
+        </property>
+        <property name="topMargin">
+         <number>40</number>
+        </property>
+        <property name="rightMargin">
+         <number>40</number>
+        </property>
+        <property name="bottomMargin">
+         <number>40</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="layout_exit_right">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_exit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>80</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string>
+                QPushButton { background-color: #95a5a6; color: white; border-radius: 8px; font-weight: bold; }
+                QPushButton:hover { background-color: #c0392b; }
+                QPushButton:pressed { background-color: #a93226; }
+               </string>
+            </property>
+            <property name="text">
+             <string>ВИХІД</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_logo_main">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>72</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string>color: #0c2461;</string>
+          </property>
+          <property name="text">
+           <string>🛡️</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_title_main">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>42</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string>color: #2c3e50;</string>
+          </property>
+          <property name="text">
+           <string>ТВІЙ ВАРТОВИЙ v1</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_subtitle_main">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>14</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string>color: #7f8c8d; letter-spacing: 2px;</string>
+          </property>
+          <property name="text">
+           <string>СИСТЕМА МУЛЬТИМОДАЛЬНОГО АНАЛІЗУ БЕЗПЕКИ</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_main">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>background-color: transparent; border-top: 2px solid #e0e0e0;</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_description">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string>
+            QLabel {
+                background-color: #f8f9fa; 
+                color: #444444; 
+                border: 1px solid #e0e0e0; 
+                border-left: 6px solid #0c2461; /* Акцентна смуга */
+                border-radius: 8px; 
+                padding: 20px;
+            }
+           </string>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p align=&quot;justify&quot; style=&quot;margin-bottom:10px;&quot;&gt;
+    &lt;span style=&quot; font-size:14pt; font-weight:600; color:#2c3e50;&quot;&gt;ПРОБЛЕМА: &lt;/span&gt;
+    &lt;span style=&quot; font-size:12pt;&quot;&gt;Сучасні освітні заклади стикаються з проблемою агресивної поведінки. Великі обсяги даних та людський фактор унеможливлюють ефективний контроль.&lt;/span&gt;
+&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;margin-bottom:20px;&quot;&gt;
+    &lt;span style=&quot; font-size:14pt; font-weight:600; color:#2c3e50;&quot;&gt;РІШЕННЯ: &lt;/span&gt;
+    &lt;span style=&quot; font-size:12pt;&quot;&gt;Цей застосунок дозволяє проводити автоматизований аналіз великих масивів відео та аудіо для виявлення агресивної поведінки.&lt;/span&gt;
+&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p align=&quot;center&quot; style=&quot;margin-top:10px;&quot;&gt;
+    &lt;span style=&quot; font-size:10pt; font-style:italic; color:#7f8c8d;&quot;&gt;* У версії v3 заплановано впровадження підключення до системи відеоспостереження.&lt;/span&gt;
+&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="vs_welcome_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="layout_interactive_area">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="btn_welcome_start">
+            <property name="minimumSize">
+             <size>
+              <width>350</width>
+              <height>65</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>16</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string>
+               QPushButton { background-color: #0c2461; color: white; border-radius: 12px; font-weight: bold; border: 2px solid transparent; }
+               QPushButton:hover { background-color: #1e3799; }
+               QPushButton:pressed { background-color: #0a1a3c; }
+              </string>
+            </property>
+            <property name="text">
+             <string>РОЗПОЧАТИ РОБОТУ</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_roles_select">
+            <property name="styleSheet">
+             <string>background: transparent;</string>
+            </property>
+            <layout class="QHBoxLayout" name="layout_roles_btns">
+             <property name="spacing">
+              <number>20</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btn_login_operator">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>14</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string>
+                  QPushButton { 
+                      background-color: #0c2461; /* Темно-синій, як у кнопки Старт */
+                      color: white; 
+                      border-radius: 12px; 
+                      font-weight: bold; 
+                      border: 2px solid transparent;
+                  }
+                  QPushButton:hover { background-color: #1e3799; }
+                  QPushButton:pressed { background-color: #0a1a3c; }
+                 </string>
+               </property>
+               <property name="text">
+                <string>Увійти як ОПЕРАТОР</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_login_analyst">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>14</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string>
+                  QPushButton { 
+                      background-color: #2c3e50; /* Темно-сірий для контрасту */
+                      color: white; 
+                      border-radius: 12px; 
+                      font-weight: bold; 
+                      border: 2px solid transparent;
+                  }
+                  QPushButton:hover { background-color: #34495e; }
+                  QPushButton:pressed { background-color: #1a252f; }
+                 </string>
+               </property>
+               <property name="text">
+                <string>Увійти як АНАЛІТИК</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="vs_exit_spacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_setup">
+       <layout class="QGridLayout" name="grid_layout_models_page">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item row="2" column="0">
+         <widget class="QFrame" name="frame_content">
+          <property name="minimumSize">
+           <size>
+            <width>850</width>
+            <height>550</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>900</width>
+            <height>600</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>QFrame#frame_content { background-color: #ffffff; border-radius: 20px; border: 1px solid #dcdcdc; }</string>
+          </property>
+          <layout class="QVBoxLayout" name="layout_frame_inner">
+           <property name="spacing">
+            <number>25</number>
+           </property>
+           <property name="leftMargin">
+            <number>40</number>
+           </property>
+           <property name="topMargin">
+            <number>40</number>
+           </property>
+           <property name="rightMargin">
+            <number>40</number>
+           </property>
+           <property name="bottomMargin">
+            <number>40</number>
+           </property>
+           <item>
+            <widget class="Line" name="line_separator">
+             <property name="styleSheet">
+              <string>color: #eee;</string>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_status_head">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>22</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string>color: #2c3e50; border: none;</string>
+             </property>
+             <property name="text">
+              <string>НАЛАШТУВАННЯ СИСТЕМИ</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="hbox_cards">
+             <property name="spacing">
+              <number>20</number>
+             </property>
+             <item>
+              <widget class="QGroupBox" name="group_video_status">
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>12</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string>
+                 QGroupBox { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; margin-top: 20px; }
+                 QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 0 10px; color: #2c3e50; font-weight: bold; font-size: 14px; font-family: &quot;Arial&quot;; }
+                </string>
+               </property>
+               <property name="title">
+                <string>ВІДЕО МОДУЛЬ</string>
+               </property>
+               <layout class="QVBoxLayout" name="vbox_video">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="topMargin">
+                 <number>25</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_video_count">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color: #7f8c8d; border: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Прикладів: ...</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_video_status">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>12</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color: #95a5a6; border: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Статус: Невідомо</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="vs_card_1">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_train_video">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>WaitCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string>QPushButton { background-color: #0c2461; color: white; border-radius: 6px; font-weight: bold; } QPushButton:hover { background-color: #0a1a3c; } QPushButton:pressed { background-color: #050d21; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Навчити</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="group_audio_status">
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>12</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string>
+                 QGroupBox { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; margin-top: 20px; }
+                 QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 0 10px; color: #2c3e50; font-weight: bold; font-size: 14px; font-family: &quot;Arial&quot;; }
+                </string>
+               </property>
+               <property name="title">
+                <string>АУДІО МОДУЛЬ</string>
+               </property>
+               <layout class="QVBoxLayout" name="vbox_audio">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="topMargin">
+                 <number>25</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_audio_count">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color: #7f8c8d; border: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Прикладів: ...</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="lbl_audio_status">
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <pointsize>12</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string>color: #95a5a6; border: none;</string>
+                  </property>
+                  <property name="text">
+                   <string>Статус: Невідомо</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="vs_main_sep">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_train_audio">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="palette">
+                   <palette>
+                    <active>
+                     <colorrole role="WindowText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Button">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Text">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="ButtonText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Base">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Window">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Highlight">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Link">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="LinkVisited">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="PlaceholderText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="128">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Accent">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                    </active>
+                    <inactive>
+                     <colorrole role="WindowText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Button">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Text">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="ButtonText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Base">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Window">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Highlight">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Link">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="LinkVisited">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="PlaceholderText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="128">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Accent">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                    </inactive>
+                    <disabled>
+                     <colorrole role="WindowText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Button">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Text">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="ButtonText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Base">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Window">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>12</red>
+                        <green>36</green>
+                        <blue>97</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Highlight">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Link">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="LinkVisited">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="PlaceholderText">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="128">
+                        <red>255</red>
+                        <green>255</green>
+                        <blue>255</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                     <colorrole role="Accent">
+                      <brush brushstyle="SolidPattern">
+                       <color alpha="255">
+                        <red>143</red>
+                        <green>0</green>
+                        <blue>4</blue>
+                       </color>
+                      </brush>
+                     </colorrole>
+                    </disabled>
+                   </palette>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Arial</family>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>WaitCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string>QPushButton { background-color: #0c2461; color: white; border-radius: 6px; font-weight: bold; } QPushButton:hover { background-color: #0a1a3c; } QPushButton:pressed { background-color: #050d21; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Навчити</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="vs_card_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_connect_cam">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>65</height>
+              </size>
+             </property>
+             <property name="palette">
+              <palette>
+               <active>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Link">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="LinkVisited">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Accent">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Link">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="LinkVisited">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Accent">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Link">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="LinkVisited">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Accent">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>143</red>
+                   <green>0</green>
+                   <blue>4</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton, QPushButton:pressed, QPushButton:hover {
+    background-color: #2f3640;  
+    color: #7f8c8d;             
+    
+    border: 2px solid #e67e22;  
+    border-style: dashed;      
+}</string>
+             </property>
+             <property name="text">
+              <string>З'ЄДНАННЯ З КАМЕРОЮ</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_load_file">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>65</height>
+              </size>
+             </property>
+             <property name="palette">
+              <palette>
+               <active>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>39</red>
+                   <green>191</green>
+                   <blue>115</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </active>
+               <inactive>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>12</red>
+                   <green>36</green>
+                   <blue>97</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>39</red>
+                   <green>191</green>
+                   <blue>115</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>255</red>
+                   <green>255</green>
+                   <blue>255</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </inactive>
+               <disabled>
+                <colorrole role="WindowText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Button">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Text">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="ButtonText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Base">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Window">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>47</red>
+                   <green>54</green>
+                   <blue>64</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="Highlight">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="255">
+                   <red>39</red>
+                   <green>191</green>
+                   <blue>115</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+                <colorrole role="PlaceholderText">
+                 <brush brushstyle="SolidPattern">
+                  <color alpha="128">
+                   <red>127</red>
+                   <green>140</green>
+                   <blue>141</blue>
+                  </color>
+                 </brush>
+                </colorrole>
+               </disabled>
+              </palette>
+             </property>
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">/* --- АКТИВНИЙ СТАН (Синій) --- */
+QPushButton {
+    background-color: #0c2461; /* Темно-синій */
+    color: white;
+    border-radius: 12px;
+    font-weight: bold;
+    font-family: &quot;Arial&quot;;
+    border: 2px solid transparent; /* Прозора рамка, щоб розмір не скакав */
+}
+
+/* При наведенні */
+QPushButton:hover {
+    background-color: #1e3799; /* Світліший синій */
+}
+
+/* При натисканні */
+QPushButton:pressed {
+    background-color: #0a1a3c; /* Дуже темний */
+}
+
+/* --- ЗАБЛОКОВАНИЙ СТАН (Ваш запит) --- */
+QPushButton:disabled {
+    background-color: #2f3640;  /* Темно-сірий фон */
+    color: #7f8c8d;             /* Тьмяний текст */
+    
+    /* !!! ЯСКРАВЕ ПОМАРАНЧЕВЕ ОБВЕДЕННЯ !!! */
+    border: 2px solid #e67e22;  
+    border-style: dashed;       /* Пунктирна лінія для ефекту &quot;Зона заборонена&quot; */
+}</string>
+             </property>
+             <property name="text">
+              <string>ОБРАТИ ФАЙЛ ДЛЯ АНАЛІЗУ</string>
+             </property>
+             <property name="shortcut">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btn_back_setup">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { background-color: #dfe6e9; border-radius: 5px; color: #2d3436; font-weight: bold; } QPushButton:hover { background-color: #b2bec3; }</string>
+          </property>
+          <property name="text">
+           <string>← Назад</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_video_analysis">
+       <layout class="QHBoxLayout" name="layout_video_page" stretch="0,0,0">
+        <property name="leftMargin">
+         <number>30</number>
+        </property>
+        <property name="topMargin">
+         <number>30</number>
+        </property>
+        <property name="rightMargin">
+         <number>30</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="layout_video_player_area">
+          <item>
+           <layout class="QHBoxLayout" name="header_video">
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_back_video">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #dfe6e9; border-radius: 5px; color: #2d3436; font-weight: bold; } QPushButton:hover { background-color: #b2bec3; }</string>
+              </property>
+              <property name="text">
+               <string>← Назад</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lbl_vid_head">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>18</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>color: #2c3e50;</string>
+              </property>
+              <property name="text">
+               <string>ВІДЕО ДЕТЕКЦІЯ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="hs_v">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>150</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_vid_seek_back">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; } QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>⏪ -3 сек</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_vid_play_pause">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; }  QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>⏸️</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_vid_seek_fwd">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; } QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>+3 сек ⏩</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="grid_layout_video">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_video_sep">
+          <property name="styleSheet">
+           <string>color: #dcdcdc;</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_video_logs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>background-color: #ffffff; border-radius: 10px; border: 1px solid #dcdcdc;</string>
+          </property>
+          <layout class="QVBoxLayout" name="layout_video_logs_inner">
+           <item>
+            <widget class="QLabel" name="lbl_vid_log_title">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string>color: #2c3e50; border: none;</string>
+             </property>
+             <property name="text">
+              <string>ЖУРНАЛ СИСТЕМИ</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="textBrowser_video_logs">
+             <property name="styleSheet">
+              <string>background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 5px; color: #34495e; font-family: &quot;Consolas&quot;; font-size: 10pt; padding: 5px;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_vid_incidents_title">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string>color: #c0392b; border: none; margin-top: 10px;</string>
+             </property>
+             <property name="text">
+              <string>ВИЯВЛЕНІ ІНЦИДЕНТИ</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="table_video_incidents">
+             <property name="styleSheet">
+              <string>QTableWidget { background-color: #fff; border: 1px solid #e9ecef; border-radius: 5px; color: #2c3e50; } QHeaderView::section { background-color: #f1f2f6; font-weight: bold; border: none; border-bottom: 1px solid #dcdcdc; }</string>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="horizontalScrollMode">
+              <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+             </property>
+             <column>
+              <property name="text">
+               <string>ID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Джерело</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Час</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Впевненість</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Оператор</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Дії</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_audio_analysis">
+       <layout class="QHBoxLayout" name="layout_audio_page" stretch="0,0,0">
+        <property name="topMargin">
+         <number>30</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="layout_audio_player_area">
+          <item>
+           <layout class="QHBoxLayout" name="header_audio">
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_back_audio">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #dfe6e9; border-radius: 5px; color: #2d3436; font-weight: bold; } QPushButton:hover { background-color: #b2bec3; }</string>
+              </property>
+              <property name="text">
+               <string>← Назад</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lbl_aud_head">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>18</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>color: #2c3e50;</string>
+              </property>
+              <property name="text">
+               <string>АУДІО ДЕТЕКЦІЯ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="hs_a">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>150</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_aud_seek_back">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; } QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>⏪ -3 сек</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_aud_play_pause">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; } QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>⏸️</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_aud_seek_fwd">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #34495e; color: white; border-radius: 10px; } QPushButton:hover { background-color: #2c3e50; }</string>
+              </property>
+              <property name="text">
+               <string>+3 сек ⏩</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="grid_layout_audio">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_audio_sep">
+          <property name="styleSheet">
+           <string>color: #dcdcdc;</string>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_audio_logs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string>background-color: #ffffff; border-radius: 10px; border: 1px solid #dcdcdc;</string>
+          </property>
+          <layout class="QVBoxLayout" name="layout_audio_logs_inner">
+           <item>
+            <widget class="QLabel" name="lbl_aud_log_title">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string>color: #2c3e50; border: none;</string>
+             </property>
+             <property name="text">
+              <string>ЖУРНАЛ СИСТЕМИ</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="textBrowser_audio_logs">
+             <property name="styleSheet">
+              <string>background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 5px; color: #34495e; font-family: &quot;Consolas&quot;; font-size: 10pt; padding: 5px;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbl_aud_incidents_title">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>14</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string>color: #c0392b; border: none; margin-top: 10px;</string>
+             </property>
+             <property name="text">
+              <string>ВИЯВЛЕНІ ІНЦИДЕНТИ</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="table_audio_incidents">
+             <property name="styleSheet">
+              <string>QTableWidget { background-color: #fff; border: 1px solid #e9ecef; border-radius: 5px; color: #2c3e50; } QHeaderView::section { background-color: #f1f2f6; font-weight: bold; border: none; border-bottom: 1px solid #dcdcdc; }</string>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+             </property>
+             <property name="horizontalScrollMode">
+              <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+             </property>
+             <column>
+              <property name="text">
+               <string>ID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Джерело</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Час</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Впевненість</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Оператор</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Дії</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_fusion_analysis">
+       <layout class="QVBoxLayout" name="layout_fusion_page">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="layout_fusion_inner">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>30</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>30</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="header_fusion">
+            <item>
+             <widget class="QPushButton" name="btn_back_fusion">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #dfe6e9; border-radius: 5px; color: #2d3436; font-weight: bold; } QPushButton:hover { background-color: #b2bec3; }</string>
+              </property>
+              <property name="text">
+               <string>←Назад</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lbl_fusion_head">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>22</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string>color: #2c3e50;</string>
+              </property>
+              <property name="text">
+               <string>ЗВІТ ПРО ІНЦИДЕНТ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="hs_rep">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>150</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_fusion_content">
+            <property name="styleSheet">
+             <string>QFrame#frame_fusion_content { background-color: #ffffff; border-radius: 15px; border: 1px solid #dcdcdc; }</string>
+            </property>
+            <layout class="QVBoxLayout" name="layout_frame_rep">
+             <property name="spacing">
+              <number>15</number>
+             </property>
+             <property name="leftMargin">
+              <number>30</number>
+             </property>
+             <property name="topMargin">
+              <number>30</number>
+             </property>
+             <property name="rightMargin">
+              <number>30</number>
+             </property>
+             <property name="bottomMargin">
+              <number>30</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="layout_modules_res">
+               <property name="spacing">
+                <number>20</number>
+               </property>
+               <item>
+                <widget class="QGroupBox" name="grp_vid_res">
+                 <property name="styleSheet">
+                  <string>QGroupBox { background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; margin-top: 10px; } QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 5px; color: #2c3e50; font-weight: bold; }</string>
+                 </property>
+                 <property name="title">
+                  <string>ВІДЕО МОДУЛЬ</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="vbox_vid_res">
+                  <property name="topMargin">
+                   <number>20</number>
+                  </property>
+                  <item>
+                   <widget class="QTextBrowser" name="textBrowser_video">
+                    <property name="font">
+                     <font>
+                      <family>Arial</family>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QTextBrowser { border: none; background-color: transparent; color: #34495e; }</string>
+                    </property>
+                    <property name="html">
+                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="grp_aud_res">
+                 <property name="styleSheet">
+                  <string>QGroupBox { background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; margin-top: 10px; } QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 5px; color: #2c3e50; font-weight: bold; }</string>
+                 </property>
+                 <property name="title">
+                  <string>АУДІО МОДУЛЬ</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="vbox_aud_res">
+                  <property name="topMargin">
+                   <number>20</number>
+                  </property>
+                  <item>
+                   <widget class="QTextBrowser" name="textBrowser_audio">
+                    <property name="font">
+                     <font>
+                      <family>Arial</family>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QTextBrowser { border: none; background-color: transparent; color: #34495e; }</string>
+                    </property>
+                    <property name="html">
+                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lbl_agg_title">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>15</pointsize>
+              <bold>true</bold>
+              <kerning>true</kerning>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #2c3e50; letter-spacing: 2px;  background-color: transparent;</string>
+            </property>
+            <property name="text">
+             <string>РЕЗУЛЬТАТИ АГРЕГАЦІЇ</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_agg">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layout_dynamic_agg">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="spacer_agg_left">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+ <item>
+     <widget class="QWidget" name="widget_agg_alert">
+      <layout class="QHBoxLayout" name="layout_dynamic_agg">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="spacer_agg_left">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_agg_prefix">
+         <property name="font">
+          <font><family>Arial</family><pointsize>18</pointsize><bold>true</bold></font>
+         </property>
+         <property name="styleSheet"><string>color: #c0392b; background-color: transparent;</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_agg_modules_count">
+         <property name="font">
+          <font><family>Arial</family><pointsize>18</pointsize><bold>true</bold></font>
+         </property>
+         <property name="styleSheet"><string>color: #c0392b; background-color: transparent;</string></property>
+         
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_agg_mid">
+         <property name="font">
+          <font><family>Arial</family><pointsize>18</pointsize><bold>true</bold></font>
+         </property>
+         <property name="styleSheet"><string>color: #c0392b; background-color: transparent;</string></property>
+         
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_agg_confidence">
+         <property name="font">
+          <font><family>Arial</family><pointsize>18</pointsize><bold>true</bold></font>
+         </property>
+         <property name="styleSheet"><string>color: #c0392b; background-color: transparent;</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_agg_suffix">
+         <property name="font">
+          <font><family>Arial</family><pointsize>18</pointsize><bold>true</bold></font>
+         </property>
+         <property name="styleSheet"><string>color: #c0392b; background-color: transparent;</string></property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer_agg_right">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+
+            <item>
+             <spacer name="spacer_agg_right">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layout_fusion_horizontal_container" stretch="0,1,1">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>350</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="grid_video_details">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+             </layout>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="grid_audio_details">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="lbl_thank_you">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string>color: #bdc3c7; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>Дякую за працю!</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="layout_rep_actions">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <spacer name="hs_rep_mid">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_goto_video">
+              <property name="minimumSize">
+               <size>
+                <width>220</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #0c2461; color: white; border-radius: 10px; } QPushButton:hover { background-color: #1e3799; }</string>
+              </property>
+              <property name="text">
+               <string>🎞️ Деталі (Відео)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_goto_audio">
+              <property name="minimumSize">
+               <size>
+                <width>220</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: #0c2461; color: white; border-radius: 10px; } QPushButton:hover { background-color: #1e3799; }</string>
+              </property>
+              <property name="text">
+               <string>🎵 Деталі (Аудіо)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1064</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="general_menu">
+    <property name="title">
+     <string>Головна</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="video_analys_menu">
+    <property name="title">
+     <string>Відео аналіз</string>
+    </property>
+    <addaction name="manual_cleaning_video_data_action"/>
+    <addaction name="start_fit_video_model_action"/>
+    <addaction name="detection_video_action"/>
+    <addaction name="analytics_video_model_action"/>
+   </widget>
+   <widget class="QMenu" name="audio_analys_menu">
+    <property name="title">
+     <string>Аудіо аналіз</string>
+    </property>
+    <addaction name="start_fit_audio_model_action"/>
+    <addaction name="detection_audio_action"/>
+    <addaction name="analytics_audio_model_action"/>
+   </widget>
+   <addaction name="general_menu"/>
+   <addaction name="video_analys_menu"/>
+   <addaction name="audio_analys_menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="analytics_audio_model_action">
+   <property name="text">
+    <string>Аналітика моделі</string>
+   </property>
+  </action>
+  <action name="action_11">
+   <property name="text">
+    <string>Запустити чистку даних</string>
+   </property>
+  </action>
+  <action name="analytics_video_model_action">
+   <property name="text">
+    <string>Аналітика моделі</string>
+   </property>
+  </action>
+  <action name="manual_cleaning_video_data_action">
+   <property name="text">
+    <string>Ручна чистка навчальних прикладів</string>
+   </property>
+  </action>
+  <action name="start_fit_video_model_action">
+   <property name="text">
+    <string>Запустити тренування</string>
+   </property>
+  </action>
+  <action name="start_fit_audio_model_action">
+   <property name="text">
+    <string>Запустити тренування</string>
+   </property>
+  </action>
+  <action name="detection_video_action">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Запустити детекцію (Відео)</string>
+   </property>
+  </action>
+  <action name="detection_audio_action">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Запустити детекцію (Аудіо)</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
