@@ -112,12 +112,6 @@ def run(model_file=AUDIO_MODEL_PATH, fold_max=5):
         shuffle_idx = np.random.permutation(len(X_train))
         X_train = X_train[shuffle_idx]
         y_train = y_train[shuffle_idx]
-        
-        model = build_model(input_shape)
-        
-        early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.3, patience=5, min_lr=1e-6)
-
 
         weights = class_weight.compute_class_weight(
             class_weight='balanced',

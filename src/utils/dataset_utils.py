@@ -1,8 +1,12 @@
 import json
 import os
-from moviepy.editor import VideoFileClip, AudioFileClip
-
 from src.config import COUNTS_FILE, DATASET_DIR
+
+try:
+    from moviepy import VideoFileClip, AudioFileClip
+except ImportError:
+    from moviepy.editor import VideoFileClip, AudioFileClip
+
 
 def get_total_count(dataset_type):
     dataset_path = os.path.join(DATASET_DIR, dataset_type)

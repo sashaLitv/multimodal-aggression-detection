@@ -348,7 +348,7 @@ class VideoDataManager:
             del y_target
             gc.collect()
 
-def run():
+def run(model_file=VIDEO_MODEL_PATH):
     BATCH_SIZE = 64
     CHECKPOINT_DIR = os.path.join(PROJECT_ROOT, "outputs", "checkpoints(Graph)")
     os.makedirs(CHECKPOINT_DIR, exist_ok=True)
@@ -415,7 +415,7 @@ def run():
         callbacks=callbacks, verbose=1
     )
 
-    weights_path = VIDEO_MODEL_PATH.replace('.keras', '.weights.h5')
+    weights_path = model_file.replace('.keras', '.weights.h5')
     model.save_weights(weights_path, save_format='tf')
     print(f"Модель збережено у {weights_path}")
 

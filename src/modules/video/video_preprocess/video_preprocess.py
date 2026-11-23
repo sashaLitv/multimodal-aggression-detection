@@ -1,9 +1,7 @@
-from collections import defaultdict
 import os
 import numpy as np
 from tqdm import tqdm
 from ultralytics import YOLO
-import inspect
 import glob
 from scipy.signal import savgol_filter
 
@@ -141,7 +139,7 @@ def prepare_sequences(features, seq_len=SEQUENCE_LENGTH, step=STEP):
     return np.array(sequences)
 
 
-def preprocess_dataset(skeleton_folder=VIDEO_DATA_DIR):
+def run(skeleton_folder=VIDEO_DATA_DIR):
     os.makedirs(OUTPUTS_DIR, exist_ok=True)
     
     files_with_paths = glob.glob(os.path.join(skeleton_folder, "**/*.skeleton"), recursive=True)

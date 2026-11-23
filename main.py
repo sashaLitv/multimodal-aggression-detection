@@ -399,7 +399,8 @@ class App(QMainWindow):
             process_module = audio_preprocess
             epochs_est = 30
             est_time_per_file = 0.2
-
+                
+        data_exists = False
         folder_prefix = f"processed_{mode}_parts"
 
         if os.path.exists(OUTPUTS_DIR):
