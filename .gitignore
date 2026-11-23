@@ -1,2 +1,14 @@
 assets/
+.ms_env
+.env
+_project_context.md
+
 .DS_Store
+.vscode/
+__pycache__/
+*.pyc
+
+audio_evaluation.csv
+fusion_dataset.csv
+learning_audio_model.ipynb
+learning_video_model_(use_colab).ipynb
