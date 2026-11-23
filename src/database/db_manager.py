@@ -8,11 +8,11 @@ import os
 
 class DatabaseManager:
     def __init__(self):
-        self.server = '127.0.0.1,1433' 
-        self.database = 'bullying_monitoring' 
-        self.username = 'sa'
-        self.password = 'VeryStr0ngP@ssw0rd' 
-        self.driver = '{ODBC Driver 17 for SQL Server}'
+        self.server = os.getenv("DB_SERVER", '127.0.0.1,1433')
+        self.database = os.getenv("DB_NAME", 'bullying_monitoring')
+        self.username = os.getenv("DB_USER", 'sa')
+        self.password = os.getenv("DB_PASSWORD", 'VeryStr0ngP@ssw0rd')
+        self.driver = os.getenv("DB_DRIVER", '{ODBC Driver 17 for SQL Server}')
         self.image_name = "mcr.microsoft.com/azure-sql-edge"
         self.container_name = "sql"
 

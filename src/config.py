@@ -103,6 +103,5 @@ except IOError:
 # =====================================================================
 # 9. SECURITY CONFIG
 # =====================================================================
-SECRET_PIN = "2026" 
-
-WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/AAQACokBzDw/messages?example_token=YOUR_WEBHOOK_TOKEN"  
+SECRET_PIN = os.getenv("APP_SECRET_PIN", "2026")
+WEBHOOK_URL = os.getenv("GOOGLE_CHAT_WEBHOOK_URL", "")
