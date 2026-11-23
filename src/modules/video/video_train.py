@@ -3,9 +3,8 @@ import gc
 import numpy as np
 import glob
 import tensorflow as tf
-import matplotlib.pyplot as plt
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import LSTM, Dense, TimeDistributed, Lambda, Layer, Input, RepeatVector,Reshape
+from tensorflow.keras.layers import LSTM, Dense, TimeDistributed, Layer, Input, RepeatVector,Reshape
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 
@@ -14,23 +13,18 @@ from src.config import HORIZON, JOINT_COUNT, HISTORY_LEN, FEATURE_DIM, THRESHOLD
 class GraphConvolution(Layer):
     def __init__(self, units, adjacency_matrix=None, activation='relu', use_bias=True, **kwargs):
         super(GraphConvolution, self).__init__(**kwargs)
-        # print(f"\n[INIT] Ініціалізація шару GraphConvolution(units={units}, use_bias={use_bias})")
         self.units = units
         self.use_bias = use_bias
         
         if adjacency_matrix is not None:
             self.A = tf.constant(adjacency_matrix, dtype=tf.float32)
-            # print(f"[INIT] Отримано матрицю суміжності A з формою: {self.A.shape}")
         else:
             self.A = None
-            # print("[INIT] Матрицю суміжності не передано (очікується в методі call)")
             
         self.activation = tf.keras.activations.get(activation)
 
     def build(self, input_shape):
-        # print(f"\n[BUILD] Виклик методу build(). Вхідна форма (input_shape): {input_shape}")
         feature_dim = input_shape[-1]
-        # print(f"[BUILD] Визначено кількість вхідних фічей (остання вісь): {feature_dim}")
         
         self.kernel = self.add_weight(
             shape=(feature_dim, self.units),
@@ -38,7 +32,6 @@ class GraphConvolution(Layer):
             name='kernel', 
             trainable=True
         )
-        # print(f"[BUILD] Створено ваги (kernel) з формою: {self.kernel.shape}")
         
         if self.use_bias:
             self.bias = self.add_weight(
@@ -47,52 +40,35 @@ class GraphConvolution(Layer):
                 name='bias', 
                 trainable=True
             )
-            # print(f"[BUILD] Створено зміщення (bias) з формою: {self.bias.shape}")
         else:
-            self.bias = None
-            # print("[BUILD] Зміщення (bias) вимкнено.")
+            self.bias = NotImplementedError
             
         super(GraphConvolution, self).build(input_shape)
-        # print("[BUILD] Метод build() успішно завершено.")
 
-    def call(self, inputs, training=None, adjacency_matrix=None):
-        # print(f"\n[CALL] ---> Початок прямого проходу (forward pass) <---")
-        # print(f"[CALL] 0. Форма вхідного тензора (inputs): {inputs.shape}")
-        
+    def call(self, inputs, adjacency_matrix=None):
         A = adjacency_matrix if adjacency_matrix is not None else self.A
         if A is None:
             raise ValueError("Матрицю суміжності потрібно передати в __init__ або в call.")
         
         # Шаг 1: Лінійна трансформація
-        # print(f"[CALL] 1. Виконуємо tensordot (множення фічей на ваги)...")
         x = tf.tensordot(inputs, self.kernel, axes=[[-1], [0]])
-        # print(f"[CALL]    Результат після tensordot: {x.shape}")
-        # print(f"[CALL]    (Очікується: Batch, Time, Joints, Units={self.units})")
-        
+
         # Шаг 2: Агрегація по графу
-        # print(f"[CALL] 2. Виконуємо агрегацію сусідів (einsum) з матрицею A {A.shape}...")
         output = tf.einsum('ij,btjc->btic', A, x)
-        # print(f"[CALL]    Результат після einsum: {output.shape}")
-        # print(f"[CALL]    (Очікується: Batch, Time, Joints, Units={self.units})")
-        
+
         # Шаг 3: Зміщення та активація
         if self.use_bias:
             output += self.bias
-            # print(f"[CALL] 3. Додано зміщення (bias)")
             
         output = self.activation(output)
-        # print(f"[CALL] 4. Застосовано функцію активації: {self.activation.__name__}")
-        # print(f"[CALL] ---> Завершення прямого проходу, вихідна форма: {output.shape} <---")
         
         return output
 
     def compute_output_shape(self, input_shape):
         out_shape = (input_shape[0], input_shape[1], input_shape[2], self.units)
-        # print(f"\n[COMPUTE_SHAPE] Обчислення вихідної форми: вхід {input_shape} -> вихід {out_shape}")
         return out_shape
 
     def get_config(self):
-        # print("\n[CONFIG] Виклик get_config() для збереження архітектури шару.")
         config = super(GraphConvolution, self).get_config()
         config.update({
             "units": self.units,

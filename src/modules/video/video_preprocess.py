@@ -1,11 +1,10 @@
 import os
 import numpy as np
-from tqdm import tqdm
-from ultralytics import YOLO
+from tqdm import tqdm_pandas
 import glob
 from scipy.signal import savgol_filter
 
-from src.config import YOLO_PATH, SEQUENCE_LENGTH, HISTORY_LEN, STEP, OUTPUTS_DIR, VIDEO_DATA_DIR, KINETIC_CLIP_BOUND, GLOBAL_VEL_STD, GLOBAL_ACC_STD
+from src.config import SEQUENCE_LENGTH, HISTORY_LEN, STEP, OUTPUTS_DIR, VIDEO_DATA_DIR, KINETIC_CLIP_BOUND, GLOBAL_VEL_STD, GLOBAL_ACC_STD
 
 NORMAL_RANGE = (
     [x for x in range(1, 41) if x != 24] + 
@@ -14,8 +13,6 @@ NORMAL_RANGE = (
 )
 
 ANOMALY_RANGE = [50, 51, 52, 106, 107, 108]
-
-yolo_model = YOLO(YOLO_PATH)
 
 def read_ntu_skeleton(filepath):
     with open(filepath, 'r') as f:

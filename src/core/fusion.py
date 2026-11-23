@@ -1,18 +1,8 @@
-# def fake_fusion(video_loss, audio_loss, context_data=None):
-#     weight_v = 0.5
-#     weight_a = 0.5
-
-#     loss = (video_loss * weight_v) + (audio_loss * weight_a)
-#     pred = 1 if loss > 0.5 else 0
-    
-#     return loss, pred
-
 import pandas as pd
 import numpy as np
 import os
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import StratifiedGroupKFold
-from sklearn.preprocessing import StandardScaler
 from sklearn.utils import compute_class_weight
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, InputLayer
@@ -26,7 +16,6 @@ class MultimodalFusionMLP:
         self.CSV_PATH = csv_path
         self.MODEL_PATH = model_path
         
-        self.scaler = StandardScaler()
         self.model = self._build_mlp()
 
     def _build_mlp(self):

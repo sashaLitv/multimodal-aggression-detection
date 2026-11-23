@@ -15,7 +15,7 @@ from src.config import VIDEO_MODEL_PATH, AUDIO_MODEL_PATH, VIDEO_MODEL_NEW_PATH,
 
 try:
     from src.modules.video import video_train
-    from src.modules.video.video_preprocess import video_preprocess
+    from src.modules.video import video_preprocess
     from src.modules.audio import audio_train, audio_preprocess
     from src.database.db_manager import DatabaseManager
     from src.utils.dataset_utils import get_total_count, get_saved_counts, save_counts
@@ -91,15 +91,6 @@ class App(QMainWindow):
         self.audio_ready = False
         self.current_video_model = VIDEO_MODEL_PATH
         self.current_audio_model = AUDIO_MODEL_PATH
-
-        self.video_path = ""
-        self.audio_path = ""
-        self.video_thread = None
-        
-        self.canvas = None
-        self.cursor_line = None
-        self.segment_predictions = []
-        self.confidence_predictions = []
 
         self.user_role = None
         self.id_user = None
