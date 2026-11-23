@@ -162,6 +162,6 @@ class UniversalSlot(QFrame):
         else: 
             self.btn_mute.setText("🔇 Увімкнути звук")
             self.btn_mute.setStyleSheet("""
-                QPushButton { background-color: #0c2461; color: white; border-radius: 5px; padding: 5px; border: none;}
-                QPushButton:hover { background-color: #1e3799; }
+                QPushButton { background-color: #444; color: white; border-radius: 5px; padding: 5px; border: none;}
+                QPushButton:hover { background-color: #555; }
             """)

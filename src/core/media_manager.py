@@ -290,7 +290,7 @@ class SmartMediaManager(QObject):
         self.task_queue.clear()
         for worker in self.active_workers.values():
             if hasattr(worker, 'stop'): worker.stop()
-            worker.terminate()
+            else:                       worker.wait(1000)
         self.active_workers.clear()
         
         for player in self.registered_audio_players.values():

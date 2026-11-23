@@ -191,4 +191,4 @@ def run(skeleton_folder=VIDEO_DATA_DIR):
         del norm_x, norm_y, anom_x, anom_y
 
 if __name__ == "__main__":
-    preprocess_dataset()
+    run()

@@ -116,6 +116,9 @@ class AudioAnalysisWorker(QThread):
         self._is_paused = paused
     def seek_seconds(self, seconds):
         self._seek_request = seconds
+    def stop(self):
+        self._is_running = False
+        self.wait(2000)
 
     def run(self):
         segment_duration = 3.0 

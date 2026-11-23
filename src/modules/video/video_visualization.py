@@ -7,7 +7,7 @@ import time
 import seaborn as sns
 import queue
 from matplotlib import rc
-from src.modules.video.video_preprocess import video_preprocess
+from modules.video import video_preprocess
 from src.modules.video import video_train
 from PIL import Image, ImageDraw
 from PySide6.QtCore import QThread, Signal
@@ -361,12 +361,13 @@ class VideoDashboardWorker(QThread):
     
     def stop(self):
         self._is_running = False
-        self.wait()
-    def toggle(self):
+        self.wait(2000)
+    def set_paused(self):
         self._is_paused = not self._is_paused
         return self._is_paused
     def seek_seconds(self, seconds):
         self._seek_request = seconds
+
     def put_text_pil(self, img, text, pos, font, color):
         draw = ImageDraw.Draw(img)
         draw.text(pos, text, font=font, fill=color, stroke_width=2, stroke_fill='black')
