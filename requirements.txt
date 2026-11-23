@@ -1,4 +1,4 @@
-docker_py==1.10.6
+docker_py>=7.0.0
 ipython==9.19.1
 ipywidgets==8.1.9
 librosa==1.0.1

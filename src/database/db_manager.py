@@ -16,11 +16,24 @@ class DatabaseManager:
         self.image_name = "mcr.microsoft.com/azure-sql-edge"
         self.container_name = "sql"
 
-        self.ensure_docker_daemon_running()
+        if self._is_db_ready():
+            print("Підключення до бази даних встановлено.")
+        else:
+            self.ensure_docker_daemon_running()
+            self.ensure_docker_container()
 
-        self.ensure_docker_container()
         self.conn = self.get_connection()
 
+    def get_connection(self):
+        connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};UID={self.username};PWD={self.password}'
+        return pyodbc.connect(connection_string, autocommit=True)
+    def _is_db_ready(self):
+        try:
+            conn = self.get_connection()
+            conn.close()
+            return True
+        except Exception:
+            return False
     def ensure_docker_daemon_running(self):
         try:
             client = docker.from_env()
@@ -87,10 +100,6 @@ class DatabaseManager:
                 container.stop()
         except NotFound:
             print(f"Контейнер {self.container_name} не знайдено.")
-    def get_connection(self):
-        connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};UID={self.username};PWD={self.password}'
-        return pyodbc.connect(connection_string, autocommit=True)
-
 
     def create_audit_record(self, id_user, id_source, start_time, end_time):
         cursor = self.conn.cursor()
