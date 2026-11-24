@@ -297,7 +297,7 @@ class App(QMainWindow):
             icon = self.style().standardIcon(QStyle.StandardPixmap.SP_DialogCancelButton)
             btn_false.setIcon(icon)
             btn_false.setToolTip("Позначити інцидент як помилковий")
-            btn_false.clicked.connect(lambda checked=False, id_inc=inc['id_incident']: self.handle_status_change(id_inc, "Хибне спрацювання"))
+            btn_false.clicked.connect(lambda checked=False, id_inc=inc['id_incident']: self.handle_status_change(id_inc, "Хибне тривога"))
 
             btn_resolve = QPushButton()
             icon = self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton)

@@ -1,40 +1,36 @@
 import subprocess
-
+from pathlib import Path
 import pyodbc
 import docker
 import time
 from docker.errors import NotFound
 import os
+import re
 
 class DatabaseManager:
     def __init__(self):
-        self.server = os.getenv("DB_SERVER", '127.0.0.1,1433')
-        self.database = os.getenv("DB_NAME", 'bullying_monitoring')
-        self.username = os.getenv("DB_USER", 'sa')
-        self.password = os.getenv("DB_PASSWORD", 'VeryStr0ngP@ssw0rd')
-        self.driver = os.getenv("DB_DRIVER", '{ODBC Driver 17 for SQL Server}')
-        self.image_name = "mcr.microsoft.com/azure-sql-edge"
-        self.container_name = "sql"
+        self.docker_config = {
+            "server": os.getenv("DB_SERVER", "127.0.0.1,1433"),
+            "driver": os.getenv("DB_DRIVER", "{ODBC Driver 17 for SQL Server}"),
+            "image_name": os.getenv("DB_DOCKER_IMAGE", "mcr.microsoft.com/azure-sql-edge"),
+            "container_name": os.getenv("DB_DOCKER_CONTAINER", "sql"),
+        }
 
-        if self._is_db_ready():
-            print("Підключення до бази даних встановлено.")
-        else:
-            self.ensure_docker_daemon_running()
-            self.ensure_docker_container()
+        self.db_config = {
+            "database": os.getenv("DB_NAME", "aggression_monitoring"),
+            "uid": os.getenv("DB_USER", "sa"),
+            "pwd": os.getenv("DB_PASSWORD", "VeryStr0ngP@ssw0rd"),
+        }
 
-        self.conn = self.get_connection()
+        if not self._is_db_ready():
+            self._ensure_docker_daemon_running()
+            self._ensure_docker_container()
 
-    def get_connection(self):
-        connection_string = f'DRIVER={self.driver};SERVER={self.server};DATABASE={self.database};UID={self.username};PWD={self.password}'
-        return pyodbc.connect(connection_string, autocommit=True)
-    def _is_db_ready(self):
-        try:
-            conn = self.get_connection()
-            conn.close()
-            return True
-        except Exception:
-            return False
-    def ensure_docker_daemon_running(self):
+        self._init_db_schema()
+
+        self.conn = self._get_connection(self.db_config["database"])
+
+    def _ensure_docker_daemon_running(self):
         try:
             client = docker.from_env()
             client.ping()
@@ -54,35 +50,112 @@ class DatabaseManager:
                     print(f"Очікування завантаження Docker ({i+1}/{max_attempts})...")
                     time.sleep(5)
             raise RuntimeError("Не вдалося запустити Docker Desktop.")
-
-    def ensure_docker_container(self):
+    def _ensure_docker_container(self):
         client = docker.from_env()
 
         try:
-            container = client.containers.get(self.container_name)
+            container = client.containers.get(self.docker_config["container_name"])
             if container.status != "running":
-                print(f"Контейнер {self.container_name} знайдено, але він зупинений. Запуск...")
+                print(f"Контейнер {self.docker_config["container_name"]} знайдено, але він зупинений. Запуск...")
                 container.start()
             else:
-                print(f"Контейнер {self.container_name} вже працює.")
+                print(f"Контейнер {self.docker_config["container_name"]} вже працює.")
 
         except NotFound:
             container = client.containers.run(
-                image = self.image_name,
-                name = self.container_name,
+                image = self.docker_config["image_name"],
+                name = self.docker_config["container_name"],
                 detach = True,
                 environment = {            
                     'ACCEPT_EULA': 'Y',
-                    'MSSQL_SA_PASSWORD': self.password,
+                    'MSSQL_SA_PASSWORD': self.db_config["pwd"],
                 },
                 ports={'1433/tcp': 1433}, 
                 cap_add = ["SYS_PTRACE"]
             )
 
         self._wait_for_sql_ready()
+
+    def _is_db_ready(self):
+        try:
+            conn = self._get_connection()
+            conn.close()
+            return True
+        except Exception:
+            return False
+    def _init_db_schema(self):
+        file_order = [
+            "users.sql",
+            "data_source.sql",
+            "incident.sql",
+            "media_proof.sql",
+            "audit.sql",
+        ]
+        db_folder = Path(__file__).resolve().parent / "dbo"
+        if not db_folder.exists():
+            raise FileNotFoundError(f"Не знайдено папку зі скриптами: {db_folder}")
+
+        safe_db_name = self.db_config["database"].replace("]", "]]")
+        safe_db_literal = self.db_config["database"].replace("'", "''")
+
+        conn_master = self._get_connection("master")
+        try:
+            cursor_master = conn_master.cursor()
+            cursor_master.execute(
+                f"IF DB_ID(N'{safe_db_literal}') IS NULL CREATE DATABASE [{safe_db_name}];"
+            )
+
+            cursor_master.close()
+        finally:
+            conn_master.close()
+
+        sql_files = [db_folder / name for name in file_order]
+
+        conn_agression = self._get_connection(self.db_config["database"])
+        try:
+            cursor_agression = conn_agression.cursor()
+            for file_path in sql_files:
+                if not file_path.exists():
+                    raise FileNotFoundError(f"SQL-файл не знайдено: {file_path}")
+
+                table_name = file_path.stem 
+                cursor_agression.execute(
+                    "SELECT OBJECT_ID(?, N'U')", (f"dbo.{table_name}",)
+                )
+                if cursor_agression.fetchone()[0] is not None:
+                    continue
+
+                sql_text = file_path.read_text(encoding="utf-8")
+                batches = re.split(
+                    r"^\s*GO\s*$", sql_text, flags=re.MULTILINE | re.IGNORECASE
+                )
+                for batch in batches:
+                    stmt = batch.strip()
+                    if stmt:
+                        cursor_agression.execute(stmt)
+
+            cursor_agression.execute("SELECT COUNT(*) FROM [dbo].[users]")
+            if cursor_agression.fetchone()[0] == 0:
+                cursor_agression.execute("""
+                    INSERT INTO [dbo].[users] (last_name, first_name, middle_name, profile_type)
+                    VALUES
+                        (N'Оператор', N'Тестовий', N'-', N'Оператор'),
+                        (N'Аналітик', N'Тестовий', N'-', N'Аналітик');
+                """)
+
+            cursor_agression.close()
+        finally:
+            conn_agression.close()
+
+
+        
+    def _get_connection(self, database="master"):
+        connection_string = f'DRIVER={self.docker_config["driver"]};SERVER={self.docker_config["server"]};DATABASE={database};UID={self.db_config["uid"]};PWD={self.db_config["pwd"]}'
+        return pyodbc.connect(connection_string, autocommit=True)
+    
     def _wait_for_sql_ready(self):
         max_retries = 15
-        conn_str = f'DRIVER={self.driver};SERVER={self.server};UID={self.username};PWD={self.password}'
+        conn_str = f'DRIVER={self.docker_config["driver"]};SERVER={self.docker_config["server"]};UID={self.db_config["uid"]};PWD={self.db_config["pwd"]}'
         for i in range(max_retries):
             try:
                 conn = pyodbc.connect(conn_str, timeout=2) 
@@ -93,13 +166,14 @@ class DatabaseManager:
     def stop_docker_container(self):
         try:
             client = docker.from_env()
-            container = client.containers.get(self.container_name)
+            container = client.containers.get(self.docker_config["container_name"])
 
             if container.status == "running":
-                print(f"Контейнер {self.container_name} знайдено, зупинка..")
+                print(f"Контейнер {self.docker_config["container_name"]} знайдено, зупинка..")
                 container.stop()
         except NotFound:
-            print(f"Контейнер {self.container_name} не знайдено.")
+            print(f"Контейнер {self.docker_config["container_name"]} не знайдено.")
+
 
     def create_audit_record(self, id_user, id_source, start_time, end_time):
         cursor = self.conn.cursor()
@@ -120,7 +194,6 @@ class DatabaseManager:
                 return id_new
         except Exception as e:
             print(f"Audit Error: {e}")
-
     def process_incident_segment(self, id_source, id_user, media_type, current_time, status, confidence, media_path):
         if confidence is not None:
             confidence = float(confidence.item() if hasattr(confidence, 'item') else confidence)
@@ -136,7 +209,6 @@ class DatabaseManager:
         BEGIN TRY
             BEGIN TRAN;
 
-            -- Приймаємо параметри з Python у безпечні SQL-змінні
             DECLARE @p_id_user INT = ?;
             DECLARE @p_media_type NVARCHAR(50) = ?;
             DECLARE @p_start_time BIGINT = ?;
@@ -144,11 +216,10 @@ class DatabaseManager:
             DECLARE @p_status NVARCHAR(50) = ?;
             DECLARE @p_id_source INT = ?;
             DECLARE @p_confidence FLOAT = ?;
-            DECLARE @p_save_path NVARCHAR(255) = ?; -- ДОДАНО: Шлях до файлу
+            DECLARE @p_save_path NVARCHAR(255) = ?; 
 
             DECLARE @existing_id INT;
 
-            -- 1. Правильна математика перетину інтервалів (з вікном ±5 секунд)
             SELECT TOP 1 @existing_id = i.id_incident
             FROM [dbo].[incident] i WITH (UPDLOCK, SERIALIZABLE)
             JOIN [dbo].[media_proof] mp ON i.id_incident = mp.id_incident
@@ -158,7 +229,6 @@ class DatabaseManager:
 
             IF @existing_id IS NOT NULL
             BEGIN
-                -- Оновлюємо статус та перезаписуємо впевненість (беремо максимальну)
                 UPDATE [dbo].[incident]
                 SET status = @p_status,
                     confidence = CASE 
@@ -169,7 +239,6 @@ class DatabaseManager:
 
                 DECLARE @existing_proof_index INT;
                 
-                -- 2. Шукаємо, чи є доказ з ТОГО Ж САМОГО файлу поруч
                 SELECT TOP 1 @existing_proof_index = media_index
                 FROM [dbo].[media_proof]
                 WHERE id_incident = @existing_id 
@@ -178,7 +247,6 @@ class DatabaseManager:
 
                 IF @existing_proof_index IS NOT NULL
                 BEGIN
-                    -- 3А. Доказ є! Просто розширюємо його межі
                     UPDATE [dbo].[media_proof]
                     SET proof_start = CASE WHEN @p_start_time < proof_start THEN @p_start_time ELSE proof_start END,
                         proof_end   = CASE WHEN @p_end_time > proof_end THEN @p_end_time ELSE proof_end END
@@ -188,13 +256,11 @@ class DatabaseManager:
                 END
                 ELSE
                 BEGIN
-                    -- 3Б. Додаємо новий доказ до ЦЬОГО Ж інциденту.
                     DECLARE @next_index INT;
                     SELECT @next_index = ISNULL(MAX(media_index), 0) + 1 
                     FROM [dbo].[media_proof] 
                     WHERE id_incident = @existing_id AND id_source = @p_id_source;
 
-                    -- ВИПРАВЛЕНО: Додано media_type та save_path
                     INSERT INTO [dbo].[media_proof] (id_incident, id_source, media_index, media_type, save_path, proof_start, proof_end)
                     VALUES (@existing_id, @p_id_source, @next_index, @p_media_type, @p_save_path, @p_start_time, @p_end_time);
                 END
@@ -203,7 +269,6 @@ class DatabaseManager:
             END
             ELSE
             BEGIN
-                -- 4. Якщо взагалі нічого немає в ці ±5 секунд - створюємо новий інцидент
                 DECLARE @new_id_table TABLE (id INT);
 
                 INSERT INTO [dbo].[incident] (id_user, status, confidence, fixation_time)
@@ -212,7 +277,6 @@ class DatabaseManager:
 
                 DECLARE @new_id INT = (SELECT TOP 1 id FROM @new_id_table);
 
-                -- ВИПРАВЛЕНО: Додано save_path
                 INSERT INTO [dbo].[media_proof] (id_incident, id_source, media_type, media_index, save_path, proof_start, proof_end)
                 VALUES (@new_id, @p_id_source, @p_media_type, 1, @p_save_path, @p_start_time, @p_end_time);
 
@@ -250,8 +314,7 @@ class DatabaseManager:
         except Exception as e:
             self.conn.rollback()
             print(f"Помилка виконання транзакції інциденту: {e}")
-            raise e
-        
+            raise e     
     def get_or_create_file_source(self, file_path):
         filename = os.path.basename(file_path)
         
@@ -286,7 +349,6 @@ class DatabaseManager:
         except Exception as e:
             print(f"Source Error: {e}")
             return None
-
     def mark_status(self, id_incident, status='Хибне спрацювання'):
         cursor = self.conn.cursor()
         try:
@@ -299,8 +361,7 @@ class DatabaseManager:
             print(f"Інцидент {id_incident} позначено як {status}.")
         except Exception as e:
             self.conn.rollback()
-            print(f"Update Error: {e}")
-    
+            print(f"Update Error: {e}")  
     def get_confirmed_incidents(self):
         query = """
             SELECT 
