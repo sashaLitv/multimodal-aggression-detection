@@ -1068,7 +1068,7 @@ class App(QMainWindow):
             self.slots[source_path]['video'].update_video_frame(QImage_frame)
     @Slot(str, float, float, bool)
     @Slot(str, float, float, bool, float, int) 
-    def handle_video_analysis(self, name: str, loss: float, current_time: float, is_bullying: bool, iou: float = 0.0, num_people: int = 1) -> None:
+    def handle_video_analysis(self, name: str, loss: float, current_time: float, is_agression: bool, iou: float = 0.0, num_people: int = 1) -> None:
         if name not in self.slots:
             return
             
@@ -1082,9 +1082,9 @@ class App(QMainWindow):
             display_conf = (clamped_conf / threshold) * 50.0
 
         if self.is_fusion_mode:
-            self.receive_fusion_data(name, os.path.basename(name), "video", display_conf, current_time, is_bullying, iou, num_people)
+            self.receive_fusion_data(name, os.path.basename(name), "video", display_conf, current_time, is_agression, iou, num_people)
         else:
-            if is_bullying:
+            if is_agression:
                 self.trigger_incident_alert(
                     media_type="Відео",
                     confidence=display_conf,

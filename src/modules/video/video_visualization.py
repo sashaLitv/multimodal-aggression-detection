@@ -114,7 +114,7 @@ class VideoDashboardWorker(QThread):
                 results = self.yolo_model.track(
                     frame, persist=True, verbose=False, stream=True, 
                     conf=0.25, iou=0.45, classes=[0], tracker="bytetrack.yaml", 
-                    imgsz=768, max_det=20, half=False
+                    imgsz=768, max_det=20, quantize="fp16"
                 )
                 res = next(results)
                 
@@ -140,11 +140,11 @@ class VideoDashboardWorker(QThread):
 
                 current_time_sec = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0
                 self._update_alarm_state(max_frame_loss, alarm_triggered)
-                is_bullying_now = self.alarm_frames_left > 0
+                is_agression_now = self.alarm_frames_left > 0
 
                 num_people = len(boxes_all)
                     
-                self.metadata_signal.emit(float(self.display_loss), float(current_time_sec), bool(is_bullying_now), float(iou), int(num_people))
+                self.metadata_signal.emit(float(self.display_loss), float(current_time_sec), bool(is_agression_now), float(iou), int(num_people))
                 self.video_pred_signal.emit(float(self.display_loss))
 
                 frame_main = cv2.resize(frame_main_raw, (TARGET_WIDTH, TARGET_HEIGHT))
@@ -152,7 +152,7 @@ class VideoDashboardWorker(QThread):
                 canvas[:, :TARGET_WIDTH] = frame_main
                     
                 img_pil = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
-                if is_bullying_now:
+                if is_agression_now:
                     self.put_text_pil(img_pil, "АГРЕСІЯ!", (20, 20), font_main, (255, 0, 0))
                     
                 self.draw_live_bar(img_pil, self.display_loss, self.THRESHOLD, TARGET_HEIGHT, self.MAX_DISPLAY_ERROR, TARGET_WIDTH)
