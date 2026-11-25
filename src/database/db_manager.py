@@ -22,6 +22,7 @@ class DatabaseManager:
             "pwd": os.getenv("DB_PASSWORD", "VeryStr0ngP@ssw0rd"),
         }
 
+        self._query_cache = {}
         if not self._is_db_ready():
             self._ensure_docker_daemon_running()
             self._ensure_docker_container()
@@ -147,7 +148,6 @@ class DatabaseManager:
         finally:
             conn_agression.close()
 
-
         
     def _get_connection(self, database="master"):
         connection_string = f'DRIVER={self.docker_config["driver"]};SERVER={self.docker_config["server"]};DATABASE={database};UID={self.db_config["uid"]};PWD={self.db_config["pwd"]}'
@@ -175,16 +175,17 @@ class DatabaseManager:
             print(f"Контейнер {self.docker_config["container_name"]} не знайдено.")
 
 
+    def _load_query(self, filename: str) -> str:
+        if filename not in self._query_cache:
+            path = Path(__file__).resolve().parent / "queries" / filename
+            self._query_cache[filename] = path.read_text(encoding="utf-8")
+        return self._query_cache[filename]
+
     def create_audit_record(self, id_user, id_source, start_time, end_time):
         cursor = self.conn.cursor()
         try:
-            query = """
-                SET NOCOUNT ON;
-                INSERT INTO audit (id_user, id_source, audit_start, audit_end)
-                OUTPUT INSERTED.id_audit
-                VALUES (?, ?, ?, ?);
-            """
-            cursor.execute(query, (id_user, id_source, start_time, end_time))
+            query = self._load_query("create_audit_record.sql")
+            cursor.execute(query, (id_user, id_source, start_time, end_time)) # id_user, id_source, audit_start, audit_end
             
             
             row = cursor.fetchone()
@@ -204,95 +205,7 @@ class DatabaseManager:
 
         cursor = self.conn.cursor()
 
-        transaction_query = """
-        SET NOCOUNT ON;
-        BEGIN TRY
-            BEGIN TRAN;
-
-            DECLARE @p_id_user INT = ?;
-            DECLARE @p_media_type NVARCHAR(50) = ?;
-            DECLARE @p_start_time BIGINT = ?;
-            DECLARE @p_end_time BIGINT = ?;
-            DECLARE @p_status NVARCHAR(50) = ?;
-            DECLARE @p_id_source INT = ?;
-            DECLARE @p_confidence FLOAT = ?;
-            DECLARE @p_save_path NVARCHAR(255) = ?; 
-
-            DECLARE @existing_id INT;
-
-            SELECT TOP 1 @existing_id = i.id_incident
-            FROM [dbo].[incident] i WITH (UPDLOCK, SERIALIZABLE)
-            JOIN [dbo].[media_proof] mp ON i.id_incident = mp.id_incident
-            WHERE i.id_user = @p_id_user 
-              AND mp.id_source = @p_id_source
-              AND (mp.proof_start <= @p_end_time + 5 AND mp.proof_end >= @p_start_time - 5);
-
-            IF @existing_id IS NOT NULL
-            BEGIN
-                UPDATE [dbo].[incident]
-                SET status = @p_status,
-                    confidence = CASE 
-                                    WHEN @p_confidence > confidence THEN @p_confidence 
-                                    ELSE confidence 
-                                 END
-                WHERE id_incident = @existing_id;
-
-                DECLARE @existing_proof_index INT;
-                
-                SELECT TOP 1 @existing_proof_index = media_index
-                FROM [dbo].[media_proof]
-                WHERE id_incident = @existing_id 
-                  AND id_source = @p_id_source
-                  AND (proof_start <= @p_end_time + 5 AND proof_end >= @p_start_time - 5);
-
-                IF @existing_proof_index IS NOT NULL
-                BEGIN
-                    UPDATE [dbo].[media_proof]
-                    SET proof_start = CASE WHEN @p_start_time < proof_start THEN @p_start_time ELSE proof_start END,
-                        proof_end   = CASE WHEN @p_end_time > proof_end THEN @p_end_time ELSE proof_end END
-                    WHERE id_incident = @existing_id 
-                      AND id_source = @p_id_source 
-                      AND media_index = @existing_proof_index;
-                END
-                ELSE
-                BEGIN
-                    DECLARE @next_index INT;
-                    SELECT @next_index = ISNULL(MAX(media_index), 0) + 1 
-                    FROM [dbo].[media_proof] 
-                    WHERE id_incident = @existing_id AND id_source = @p_id_source;
-
-                    INSERT INTO [dbo].[media_proof] (id_incident, id_source, media_index, media_type, save_path, proof_start, proof_end)
-                    VALUES (@existing_id, @p_id_source, @next_index, @p_media_type, @p_save_path, @p_start_time, @p_end_time);
-                END
-
-                SELECT @existing_id AS result_id;
-            END
-            ELSE
-            BEGIN
-                DECLARE @new_id_table TABLE (id INT);
-
-                INSERT INTO [dbo].[incident] (id_user, status, confidence, fixation_time)
-                OUTPUT INSERTED.id_incident INTO @new_id_table
-                VALUES (@p_id_user, @p_status, @p_confidence, GETDATE());
-
-                DECLARE @new_id INT = (SELECT TOP 1 id FROM @new_id_table);
-
-                INSERT INTO [dbo].[media_proof] (id_incident, id_source, media_type, media_index, save_path, proof_start, proof_end)
-                VALUES (@new_id, @p_id_source, @p_media_type, 1, @p_save_path, @p_start_time, @p_end_time);
-
-                SELECT @new_id AS result_id;
-
-            END
-
-            COMMIT TRAN;
-        END TRY
-        BEGIN CATCH
-            IF @@TRANCOUNT > 0
-                ROLLBACK TRAN;
-            THROW;
-        END CATCH
-        """
-
+        transaction_query = self._load_query("process_incident_segment.sql")
         params = (
             id_user, 
             media_type, 
@@ -307,12 +220,10 @@ class DatabaseManager:
         try:
             cursor.execute(transaction_query, params)
             result = cursor.fetchone()
-            self.conn.commit()
             
             return result[0] if result else None
             
         except Exception as e:
-            self.conn.rollback()
             print(f"Помилка виконання транзакції інциденту: {e}")
             raise e     
     def get_or_create_file_source(self, file_path):
@@ -320,7 +231,8 @@ class DatabaseManager:
         
         cursor = self.conn.cursor()
         try:
-            cursor.execute("SET NOCOUNT ON; SELECT id_source FROM data_source WHERE connection_path = ?", (file_path,))
+            query_get = self._load_query("get_file_source.sql")
+            cursor.execute(query_get, (file_path,))
             row = cursor.fetchone()
             
             if row:
@@ -328,13 +240,8 @@ class DatabaseManager:
             
             print(f"Реєстрація нового файлу: {filename}")
             
-            query = """
-                SET NOCOUNT ON;
-                INSERT INTO data_source (name, source_type, connection_path, description)
-                OUTPUT INSERTED.id_source
-                VALUES (?, 'File', ?, 'Завантажений користувачем файл');
-            """
-            cursor.execute(query, (filename, file_path))
+            query_create = self._load_query("create_file_source.sql")
+            cursor.execute(query_create, (filename, file_path))
             
             row = cursor.fetchone()
             
@@ -352,40 +259,13 @@ class DatabaseManager:
     def mark_status(self, id_incident, status='Хибне спрацювання'):
         cursor = self.conn.cursor()
         try:
-            query = """
-                SET NOCOUNT ON;
-                UPDATE incident SET status = ? WHERE id_incident = ?
-            """
+            query = self._load_query("mark_status.sql")
             cursor.execute(query, (status, id_incident))
-            self.conn.commit()
             print(f"Інцидент {id_incident} позначено як {status}.")
         except Exception as e:
-            self.conn.rollback()
             print(f"Update Error: {e}")  
     def get_confirmed_incidents(self):
-        query = """
-            SELECT 
-                i.id_incident,
-                mp.media_type as media_type,
-                (u.last_name + ' ' + u.first_name) as user_name,
-                ds.connection_path as source_name,
-                mp.proof_start,
-                mp.proof_end,
-                i.fixation_time as found_time,
-                i.confidence
-            FROM 
-                [dbo].[incident] i
-            JOIN 
-                [dbo].[users] u ON i.id_user = u.id_user
-            JOIN 
-                [dbo].[media_proof] mp ON i.id_incident = mp.id_incident
-            JOIN 
-                [dbo].[data_source] ds ON mp.id_source = ds.id_source
-            WHERE 
-                i.status = N'Підтверджено' OR i.status = N'Критично'
-            ORDER BY 
-                i.id_incident DESC
-        """
+        query = self._load_query("get_confirmed_incidents.sql")
 
         cursor = self.conn.cursor()
         cursor.execute(query)

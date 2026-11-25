@@ -1,20 +1,17 @@
 from collections import deque
 import numpy as np
-import matplotlib.pyplot as plt
-import os
 import cv2
 import time
 import seaborn as sns
 import queue
 from matplotlib import rc
-from modules.video import video_preprocess
+from src.modules.video import video_preprocess
 from src.modules.video import video_train
 from PIL import Image, ImageDraw
 from PySide6.QtCore import QThread, Signal
 from PySide6.QtGui import QImage
 
 from src.config import HISTORY_LEN, SEQUENCE_LENGTH, STEP, CONSECUTIVE
-# from src.config import THRESHOLD_FILE, YOLO_PATH, OUTPUT_PATH_FIGURES, DIST_PLOT_FILE, CM_PLOT_FILE
 from src.config import font_small, font_main
 rc('animation', html='jshtml')
 sns.set_style("whitegrid")
