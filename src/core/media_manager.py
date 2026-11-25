@@ -269,26 +269,30 @@ class SmartMediaManager(QObject):
             if player.duration() > 0:
                 new_pos_ms = min(new_pos_ms, player.duration() - 100)
             player.setPosition(new_pos_ms)
-    def toggle_all(self):
-        self._is_globally_paused = not self._is_globally_paused
+    def set_paused_all(self, paused: bool):
+        self._is_globally_paused = paused
         
         for worker in self.active_workers.values():
             if hasattr(worker, 'set_paused'):
-                worker.set_paused(self._is_globally_paused)
+                worker.set_paused(paused)
         
         for player in self.registered_audio_players.values():
-            if self._is_globally_paused:
+            if paused:
                 player.pause()
             else:
                 if player.playbackState() == QMediaPlayer.PlaybackState.StoppedState:
                     player.setPosition(max(0, player.position() - 100))
                 player.play()
         
-        self.global_pause_signal.emit(self._is_globally_paused)
-        return self._is_globally_paused
+        self.global_pause_signal.emit(paused)
+        return paused
+    def toggle_all(self):
+        return self.set_paused_all(not self._is_globally_paused)
     def stop_all(self):
+        self._is_globally_paused = False
+
         self.task_queue.clear()
-        for worker in self.active_workers.values():
+        for worker in list(self.active_workers.values()):
             if hasattr(worker, 'stop'): worker.stop()
             else:                       worker.wait(1000)
         self.active_workers.clear()

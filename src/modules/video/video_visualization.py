@@ -359,9 +359,6 @@ class VideoDashboardWorker(QThread):
     def stop(self):
         self._is_running = False
         self.wait(2000)
-    def set_paused(self):
-        self._is_paused = not self._is_paused
-        return self._is_paused
     def seek_seconds(self, seconds):
         self._seek_request = seconds
 

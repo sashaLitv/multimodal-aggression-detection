@@ -8,7 +8,7 @@ import subprocess
 import requests
 from PySide6.QtWidgets import QApplication, QHBoxLayout, QLineEdit, QMainWindow, QMessageBox, QFileDialog, QPushButton, QStyle, QTableWidgetItem, QInputDialog, QWidget
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, Qt, QTimer, Slot
+from PySide6.QtCore import QFile, Qt, QTimer, Slot, QEvent
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QFont
 
 from src.config import VIDEO_MODEL_PATH, AUDIO_MODEL_PATH, VIDEO_MODEL_NEW_PATH, AUDIO_MODEL_NEW_PATH, OUTPUTS_DIR, UI_PATH, SECRET_PIN,AUDIO_THRESHOLD, WEBHOOK_URL
@@ -70,8 +70,10 @@ class App(QMainWindow):
             sys.exit(-1)
         loader = QUiLoader()
         self.ui = loader.load(ui_file, self)
+        self.ui.closeEvent = self.close
         ui_file.close()
-        
+        self.ui.installEventFilter(self)
+
         pixmap = QPixmap(64, 64)
         pixmap.fill(Qt.GlobalColor.transparent)
 
@@ -581,6 +583,8 @@ class App(QMainWindow):
                 audio_idx += 1
                 self.manager.register_audio_player(path, slot_a.audio_player)
 
+        self.ui.btn_aud_play_pause.setText("⏸️")
+        self.ui.btn_vid_play_pause.setText("⏸️")
         self.manager.ingest_files(files_to_process)
 
         for path, comps in self.slots.items():
@@ -923,9 +927,17 @@ class App(QMainWindow):
         msg.setText("Ця функція ще не реалізована.")
         msg.setInformativeText("Дякую за розуміння! 🥺\nМи працюємо над цим.")
         msg.exec()
-    def close(self):
+    def eventFilter(self, obj, event):
+        if obj is self.ui and event.type() == QEvent.Type.Close:
+            self.close(event)
+            return True
+        return super().eventFilter(obj, event)
+    def close(self, event=None):
+        self.manager.stop_all()
         self.save_all_sessions()
         self.db.stop_docker_container()
+        if event:
+            event.accept()
         QApplication.instance().quit()
     def on_goto_video_details(self):
         self.switch_analysis_page("page_video_analysis")
@@ -937,11 +949,9 @@ class App(QMainWindow):
         idle_pages = [self.pages["page_welcome"], self.pages["page_setup"]]
         
         if index in idle_pages:
-            if self.ui.btn_aud_play_pause.text() == "⏸️":
-                self.toggle()
-            if self.ui.btn_vid_play_pause.text() == "⏸️":
-                self.toggle()
-                
+            self.manager.set_paused_all(True)
+            self.ui.btn_aud_play_pause.setText("▶️")
+            self.ui.btn_vid_play_pause.setText("▶️")
             self.manager.set_global_volume(0.0)
         else:
             self.manager.set_global_volume(1.0)
@@ -1023,7 +1033,7 @@ class App(QMainWindow):
             components = self.slots[name]
             
             if isinstance(components, dict):
-                for slot_type, slot_obj in components.items():
+                for _, slot_obj in components.items():
                     if hasattr(slot_obj, 'lbl_status'):
                         slot_obj.lbl_status.setText(f"ПОМИЛКА: {message}")
                         slot_obj.lbl_status.setStyleSheet("background-color: #95a5a6; color: white;")
