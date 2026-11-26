@@ -6,7 +6,7 @@ import datetime
 import platform
 import subprocess
 import requests
-from PySide6.QtWidgets import QApplication, QHBoxLayout, QLineEdit, QMainWindow, QMessageBox, QFileDialog, QPushButton, QStyle, QTableWidgetItem, QInputDialog, QWidget
+from PySide6.QtWidgets import QApplication, QLineEdit, QMainWindow, QMessageBox, QFileDialog, QInputDialog
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, Qt, QTimer, Slot, QEvent
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QFont
@@ -22,6 +22,7 @@ try:
     from src.core.media_manager import SmartMediaManager
     from src.ui.universal_slot import UniversalSlot
     from src.core.fusion import MultimodalFusionMLP
+    from src.ui.view_manager import ViewManager
 except ImportError as e:
     print(f"Помилка імпорту: {e}")
     video_train = video_preprocess = audio_train = audio_preprocess = None
@@ -257,66 +258,10 @@ class App(QMainWindow):
         incidents = self.db.get_confirmed_incidents()
 
         if hasattr(self.ui, 'table_video_incidents'):
-            self._fill_incidents_table(self.ui.table_video_incidents, incidents)
+            ViewManager.fill_incidents_table(self.ui.table_video_incidents, incidents, self.handle_play_incident, self.handle_status_change)
 
         if hasattr(self.ui, 'table_audio_incidents'):
-            self._fill_incidents_table(self.ui.table_audio_incidents, incidents)
-    def _fill_incidents_table(self, table_widget, incidents):
-        table_widget.setRowCount(0)
-        table_widget.setRowCount(len(incidents))
-        table_widget.setColumnCount(6)
-
-        for row_idx, inc in enumerate(incidents):
-            id_inc = QTableWidgetItem(str(inc['id_incident']))
-            table_widget.setItem(row_idx, 0, id_inc)
-            
-            item_source = QTableWidgetItem(inc['source_name'])
-            table_widget.setItem(row_idx, 1, item_source)
-            
-            item_time = QTableWidgetItem(inc['time_formatted'])
-            table_widget.setItem(row_idx, 2, item_time)
-            
-            conf_str = f"{inc['confidence']:.1f}%" 
-            item_conf = QTableWidgetItem(conf_str)
-            table_widget.setItem(row_idx, 3, item_conf)
-            
-            item_operator = QTableWidgetItem(inc['user_name'])
-            table_widget.setItem(row_idx, 4, item_operator)
-
-
-            container = QWidget()
-            layout = QHBoxLayout(container)
-            layout.setContentsMargins(2, 2, 2, 2)
-            layout.setSpacing(4)
-
-            btn_play = QPushButton()
-            icon = self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay)
-            btn_play.setIcon(icon)
-            btn_play.setToolTip("Відтворити інцидент")
-            btn_play.clicked.connect(lambda checked=False, file_path=inc['source_name']: self.handle_play_incident(file_path))
-
-            btn_false = QPushButton()
-            icon = self.style().standardIcon(QStyle.StandardPixmap.SP_DialogCancelButton)
-            btn_false.setIcon(icon)
-            btn_false.setToolTip("Позначити інцидент як помилковий")
-            btn_false.clicked.connect(lambda checked=False, id_inc=inc['id_incident']: self.handle_status_change(id_inc, "Хибне тривога"))
-
-            btn_resolve = QPushButton()
-            icon = self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton)
-            btn_resolve.setIcon(icon)
-            btn_resolve.setToolTip("Позначити інцидент як вирішений")
-            btn_resolve.clicked.connect(lambda checked=False, id_inc=inc['id_incident']: self.handle_status_change(id_inc, "Вирішено"))
-
-            layout.addWidget(btn_play)
-            layout.addWidget(btn_false)
-            layout.addWidget(btn_resolve)
-
-            layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-            empty_item = QTableWidgetItem("")
-            table_widget.setItem(row_idx, 5, empty_item)
-            table_widget.setCellWidget(row_idx, 5, container)
-
+            ViewManager.fill_incidents_table(self.ui.table_audio_incidents, incidents, self.handle_play_incident, self.handle_status_change)
 
     def check_system_status(self):
         if self.is_training:
@@ -554,9 +499,9 @@ class App(QMainWindow):
         target_page_key = "page_fusion_analysis" if self.is_fusion_mode else ("page_audio_analysis" if any_audio else "page_video_analysis")
         self.ui.stackedWidget.setCurrentIndex(self.pages[target_page_key])
         
-        layouts = self.get_active_layout() 
-        if layouts["video"]: self.clear_layout(layouts["video"])
-        if layouts["audio"]: self.clear_layout(layouts["audio"])
+        layouts = ViewManager.get_active_layout(self.ui, self.pages)
+        if layouts["video"]: ViewManager.clear_layout(layouts["video"])
+        if layouts["audio"]: ViewManager.clear_layout(layouts["audio"])
 
         total_videos = sum(1 for p in files_to_process if self.manager.has_video(p))
         total_audios = sum(1 for p in files_to_process if self.manager.has_audio(p))
@@ -572,14 +517,14 @@ class App(QMainWindow):
                 slot_v = UniversalSlot(path, db_id, has_video=True, has_audio=False, user_role=self.user_role)
                 slot_v.is_fusion_managed = self.is_fusion_mode
                 self.slots[path]['video'] = slot_v
-                self._add_widget_to_grid(layouts['video'], slot_v, video_idx, total_videos)
+                ViewManager.add_widget_to_grid(layouts['video'], slot_v, video_idx, total_videos)
                 video_idx += 1
                 
             if self.manager.has_audio(path):
                 slot_a = UniversalSlot(path, db_id, has_video=False, has_audio=True, user_role=self.user_role)
                 slot_a.is_fusion_managed = self.is_fusion_mode
                 self.slots[path]['audio'] = slot_a
-                self._add_widget_to_grid(layouts['audio'], slot_a, audio_idx, total_audios)
+                ViewManager.add_widget_to_grid(layouts['audio'], slot_a, audio_idx, total_audios)
                 audio_idx += 1
                 self.manager.register_audio_player(path, slot_a.audio_player)
 
@@ -590,44 +535,6 @@ class App(QMainWindow):
         for path, comps in self.slots.items():
             if 'audio' in comps and hasattr(comps['audio'], 'audio_player'):
                 comps['audio'].audio_player.play()
-    def _add_widget_to_grid(self, layout, widget, index, total_count):
-        if total_count == 1:
-            layout.addWidget(widget, 0, 0)
-        elif total_count == 2:
-            layout.addWidget(widget, index, 0)
-        elif total_count == 3:
-            if index == 0:
-                layout.addWidget(widget, 0, 0, 1, 2) 
-            elif index == 1:
-                layout.addWidget(widget, 1, 0)
-            else:
-                layout.addWidget(widget, 1, 1)
-        else: 
-            row = index // 2
-            col = index % 2
-            layout.addWidget(widget, row, col)
-    
-
-    def get_active_layout(self):
-        curr_idx = self.ui.stackedWidget.currentIndex()
-        
-        if curr_idx == self.pages["page_video_analysis"]:
-            return {"video": self.ui.grid_layout_video, "audio": None}
-        elif curr_idx == self.pages["page_audio_analysis"]:
-            return {"video": None, "audio": self.ui.grid_layout_audio}
-        elif curr_idx == self.pages["page_fusion_analysis"]:
-            return {"video": self.ui.grid_video_details, "audio": self.ui.grid_audio_details}
-        return None
-    def clear_layout(self, layout):
-        if layout is None:
-            return
-            
-        while layout.count():
-            item = layout.takeAt(0)
-            widget = item.widget()
-            if widget is not None:
-                widget.deleteLater()
-
 
     def send_google_chat_alert(self,loss_value, source_name="Невідомо"):
         import threading
@@ -753,79 +660,9 @@ class App(QMainWindow):
             print(f"ПОМИЛКА в receive_fusion_data: {e}")
     def update_fusion_ui(self):
         try:
-            table_start = """
-            <table width="100%" cellspacing="0" cellpadding="8">
-                <tr style="color: #7f8c8d; font-size: 10pt; background-color: #f8f9fa;">
-                    <th width="30%" align="left">Джерело</th>
-                    <th width="20%" align="center">Впевненість</th>
-                    <th width="20%" align="center">Тривалість</th>
-                    <th width="25%" align="center">Мітка</th>
-                </tr>
-            """
-            table_end = "</table>"
-            audio_rows, video_rows = "", ""
-
-            def generate_rows(module_data, module_type):
-                rows_html = ""
-                if not module_data: return rows_html
-
-                recent_events = module_data
-                rowspan_count = len(recent_events) 
-
-                for i, ev in enumerate(recent_events):
-                    name = ev["name"]
-                    if ev["is_aggression"]:
-                        c_conf = "#c0392b"
-                        l_text = "Критично" if module_type == "audio" else "Агресія"
-                        c_label = "#e67e22" if module_type == "audio" else "#c0392b"
-                    else:
-                        c_conf, l_text, c_label = "#27ae60", "Норма", "#27ae60"
-
-                    conf_str = f'<span style="color:{c_conf};">{ev["mean_conf"]:.1f}%</span>'
-
-                    t_start = f"{int(ev['start_raw'] // 60):02d}:{int(ev['start_raw'] % 60):02d}"
-                    t_end = f"{int(ev['end_raw'] // 60):02d}:{int(ev['end_raw'] % 60):02d}"
-
-                    if t_start == t_end:
-                        dur_str = t_start
-                    else:
-                        dur_str = f"{t_start}-{t_end}"
-
-                    label_str = f'<span style="color:{c_label}; font-weight:bold;">{l_text}</span>'
-
-                    if i == 0:
-                        name_td = f'<td width="30%" rowspan="{rowspan_count}" align="left" style="border-bottom: 1px solid #bdc3c7; vertical-align: middle;"><b>{name}</b></td>'
-                    else:
-                        name_td = "" 
-
-                    rows_html += f"""
-                    <tr>
-                        {name_td}
-                        <td width="20%" align="center" style="border-bottom: 1px solid #ecf0f1;">{conf_str}</td>
-                        <td width="20%" align="center" style="border-bottom: 1px solid #ecf0f1;">{dur_str}</td>
-                        <td width="25%" align="center" style="border-bottom: 1px solid #ecf0f1;">{label_str}</td>
-                    </tr>
-                    """
-                return rows_html
-
-            for _, mods in self.fusion_buffer.items():
-                audio_rows += generate_rows(mods.get("audio", []), "audio")
-                video_rows += generate_rows(mods.get("video", []), "video")
-
-            if hasattr(self.ui, 'textBrowser_audio'):
-                tb_audio = self.ui.textBrowser_audio
-                scroll_a = tb_audio.verticalScrollBar()
-                pos_a = scroll_a.value()
-                tb_audio.setHtml(table_start + audio_rows + table_end)
-                scroll_a.setValue(pos_a)
-
-            if hasattr(self.ui, 'textBrowser_video'):
-                tb_video = self.ui.textBrowser_video
-                scroll_v = tb_video.verticalScrollBar()
-                pos_v = scroll_v.value()
-                tb_video.setHtml(table_start + video_rows + table_end)
-                scroll_v.setValue(pos_v)
-                
+            tb_audio = getattr(self.ui, 'textBrowser_audio', None)
+            tb_video = getattr(self.ui, 'textBrowser_video', None)
+            ViewManager.render_fusion_tables(tb_audio, tb_video, self.fusion_buffer)
         except Exception as e:
             print(f"ПОМИЛКА в update_fusion_ui: {e}")
     def check_fusion_conditions(self, source_path):
@@ -845,7 +682,6 @@ class App(QMainWindow):
                     if not vid_event["is_aggression"]: 
                         continue
                     
-                    # Логіка перетину інтервалів
                     if (aud_event["start_raw"] < vid_event["end_raw"] + 1.0) and \
                        (vid_event["start_raw"] < aud_event["end_raw"] + 1.0):
                         
@@ -860,12 +696,7 @@ class App(QMainWindow):
                         incident_start_time = max(1, min(aud_event["start_raw"], vid_event["start_raw"]))
 
                         if label == 1: 
-                            if hasattr(self.ui, 'widget_agg_alert'):
-                                self.ui.lbl_agg_prefix.setText(f"УВАГА! АГРЕСИВНА ПОВЕДІНКА [{aud_event['name']}]")
-                                self.ui.lbl_agg_confidence.setText(f"{fusion_conf:.1f}")
-                                self.ui.lbl_agg_suffix.setText("% впевненості)")
-                                self.ui.widget_agg_alert.show()
-                            
+                            ViewManager.update_aggression_banner(self.ui, fusion_conf, True, aud_event["name"], )
                             self.trigger_incident_alert(
                                 media_type="Злиття",
                                 confidence=fusion_conf,
@@ -875,15 +706,15 @@ class App(QMainWindow):
                             return
 
             any_active = any(e["is_aggression"] for e in audio_list + video_list)
-            if not any_active and hasattr(self.ui, 'widget_agg_alert'):
-                self.ui.widget_agg_alert.hide()
+            if not any_active:
+                ViewManager.update_aggression_banner(self.ui, 0.0, False)
 
         except Exception as e:
             print(f"ПОМИЛКА в check_fusion_conditions: {e}")
     def switch_analysis_page(self, target_page_key):
         self.ui.stackedWidget.setCurrentIndex(self.pages[target_page_key])
         
-        layouts = self.get_active_layout()
+        layouts = ViewManager.get_active_layout(self.ui, self.pages)
         
         total_videos = sum(1 for comps in self.slots.values() if 'video' in comps)
         total_audios = sum(1 for comps in self.slots.values() if 'audio' in comps)
@@ -893,11 +724,11 @@ class App(QMainWindow):
         
         for _, comps in self.slots.items():
             if 'video' in comps and layouts["video"] is not None:
-                self._add_widget_to_grid(layouts['video'], comps['video'], video_idx, total_videos)
+                ViewManager.add_widget_to_grid(layouts['video'], comps['video'], video_idx, total_videos)
                 video_idx += 1
                 
             if 'audio' in comps and layouts["audio"] is not None:
-                self._add_widget_to_grid(layouts['audio'], comps['audio'], audio_idx, total_audios)
+                ViewManager.add_widget_to_grid(layouts['audio'], comps['audio'], audio_idx, total_audios)
                 audio_idx += 1
     
     def on_start_work_clicked(self):
